@@ -1,20 +1,29 @@
-// Galton Board simulation in js
-
 function setup() {
   Height = 700;
   Width = 700;
+  center_pos = Width/2;
   spaceY = 20;
   spaceX = 15;
-  radius = 15;
-  rows = 15;
+  diameter = 15;
+  rows = 7;
   zero = 0;
   one = 0;
+  total_beads = 100;
+  circle_color = red;
+  count_frames = 0;
   createCanvas(Width, Height);
   background(200);
+  frameRate(60);
 }
 
 function draw() {
-  const center_pos = Width/2;
+  count_frames++;
+  count_frames = count_frames%121;
+  // let choice = random_number(0, 1);
+  draw_galton_board(count_frames);
+}
+
+function draw_galton_board(count_frames) {
   let positions = [[]];
   positions[0].push(center_pos);
   let row_num = 1;
@@ -33,19 +42,12 @@ function draw() {
   row_num = 1;
   positions.forEach((row) => {
     row.forEach((pos) => {
-      circle(pos, spaceY*row_num, radius);
+      if(count_frames == 0) fill('red');
+      if(count_frames == 60) fill('white');
+      circle(pos, spaceY*row_num, diameter);
     });
     row_num += 1;
   });
-  let choice = random_number(0, 1);
-  if(choice == 0) zero += 1;
-  else one += 1;
-  // console.log('zero = ', zero, ' one = ', one);
-  create_graph(positions);
-}
-
-function create_graph(positions) {
-  
 }
 
 function random_number(min, max) {
