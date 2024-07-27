@@ -5,13 +5,14 @@ function setup() {
   spaceY = 20;
   spaceX = 15;
   diameter = 15;
-  rows = 7;
+  rows = 10;
   zero = 0;
   one = 0;
   beadX = center_pos;
   beadY = spaceY;
   one_cycle = rows;
   count_frames = 0;
+  flag = 0;
   createCanvas(Width, Height);
   background(200);
   frameRate(60);
@@ -20,9 +21,11 @@ function setup() {
 function draw() {
   count_frames += 1;
   count_frames = count_frames%60;
-  if(count_frames >= 29 && count_frames <= 59) {
-    if(count_frames%4 == 0) {
-      draw_galton_board(beadX, beadY);
+  
+  if(count_frames%5 == 0 || flag) {
+    draw_galton_board(beadX, beadY);
+    if(count_frames%5 == 0) flag = 0;
+    if(!flag) { 
       let choice = random_number(0, 1);
       if(choice == 0) {
         beadX -= spaceX;
@@ -31,7 +34,7 @@ function draw() {
         beadX += spaceX;
       }
       beadY += spaceY;
-      
+      flag = 1;
       one_cycle -= 1;
       if(one_cycle == 0) {
         beadX = center_pos;
