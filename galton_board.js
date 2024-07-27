@@ -13,6 +13,8 @@ function setup() {
   one_cycle = rows;
   count_frames = 0;
   flag = 0;
+  // distribution = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  distribution = Array(rows).fill(0);
   createCanvas(Width, Height);
   background(200);
   frameRate(60);
@@ -23,7 +25,7 @@ function draw() {
   count_frames = count_frames%60;
   
   if(count_frames%5 == 0 || flag) {
-    draw_galton_board(beadX, beadY);
+    draw_galton_board(beadX, beadY, rows-one_cycle+1);
     if(count_frames%5 == 0) flag = 0;
     if(!flag) { 
       let choice = random_number(0, 1);
@@ -45,9 +47,11 @@ function draw() {
   }
   else
     draw_galton_board();
+  
+  
 }
 
-function draw_galton_board(beadX=-1, beadY=-1) {
+function draw_galton_board(beadX=-1, beadY=-1, curr_row=0) {
   let positions = [[]];
   positions[0].push(center_pos);
   let row_num = 1;
@@ -64,11 +68,23 @@ function draw_galton_board(beadX=-1, beadY=-1) {
     positions.push(curr);
   }
   row_num = 1;
+  let col = 0, flag = 0;
   positions.forEach((row) => {
     row.forEach((pos) => {
-      if(beadX == pos && beadY == row_num*spaceY) fill('red');
-      else fill('white');
+      if(beadX == pos && beadY == row_num*spaceY) {
+        fill('red');
+        if(!flag) {
+          distribution[col] += 1;
+          flag = 1;
+        }
+      }
+      else {
+        fill('white');
+         flag = 0; 
+      }
       circle(pos, spaceY*row_num, diameter);
+      
+      col += 1;
     });
     row_num += 1;
   });
