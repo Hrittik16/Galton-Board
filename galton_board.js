@@ -8,8 +8,9 @@ function setup() {
   rows = 7;
   zero = 0;
   one = 0;
-  total_beads = 100;
-  circle_color = red;
+  beadX = center_pos;
+  beadY = spaceY;
+  one_cycle = rows;
   count_frames = 0;
   createCanvas(Width, Height);
   background(200);
@@ -17,13 +18,33 @@ function setup() {
 }
 
 function draw() {
-  count_frames++;
-  count_frames = count_frames%121;
-  // let choice = random_number(0, 1);
-  draw_galton_board(count_frames);
+  count_frames += 1;
+  count_frames = count_frames%60;
+  if(count_frames >= 29 && count_frames <= 59) {
+    if(count_frames%4 == 0) {
+      draw_galton_board(beadX, beadY);
+      let choice = random_number(0, 1);
+      if(choice == 0) {
+        beadX -= spaceX;
+      }
+      else {
+        beadX += spaceX;
+      }
+      beadY += spaceY;
+      
+      one_cycle -= 1;
+      if(one_cycle == 0) {
+        beadX = center_pos;
+        beadY = spaceY;
+        one_cycle = rows;
+      }
+    }
+  }
+  else
+    draw_galton_board();
 }
 
-function draw_galton_board(count_frames) {
+function draw_galton_board(beadX=-1, beadY=-1) {
   let positions = [[]];
   positions[0].push(center_pos);
   let row_num = 1;
@@ -42,8 +63,8 @@ function draw_galton_board(count_frames) {
   row_num = 1;
   positions.forEach((row) => {
     row.forEach((pos) => {
-      if(count_frames == 0) fill('red');
-      if(count_frames == 60) fill('white');
+      if(beadX == pos && beadY == row_num*spaceY) fill('red');
+      else fill('white');
       circle(pos, spaceY*row_num, diameter);
     });
     row_num += 1;
