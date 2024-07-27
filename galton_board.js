@@ -1,11 +1,12 @@
-// Galton Board simulation in p5.js
+// Galton Board simulation in js
 
 function setup() {
   Height = 700;
   Width = 700;
-  node_space = 50;
-  radius = 25;
-  rows = 7;
+  spaceY = 20;
+  spaceX = 15;
+  radius = 15;
+  rows = 15;
   zero = 0;
   one = 0;
   createCanvas(Width, Height);
@@ -21,10 +22,10 @@ function draw() {
     let prev = positions[i-1];
     let curr = [];
     prev.forEach((pos) => {
-      curr.push(pos-50);
-      curr.push(pos+50);
-      line(pos, node_space*row_num, pos-50, node_space*(row_num+1));
-      line(pos, node_space*row_num, pos+50, node_space*(row_num+1));
+      curr.push(pos-spaceX);
+      curr.push(pos+spaceX);
+      line(pos, spaceY*row_num, pos-spaceX, spaceY*(row_num+1));
+      line(pos, spaceY*row_num, pos+spaceX, spaceY*(row_num+1));
     });
     row_num += 1;
     positions.push(curr);
@@ -32,14 +33,14 @@ function draw() {
   row_num = 1;
   positions.forEach((row) => {
     row.forEach((pos) => {
-      circle(pos, node_space*row_num, radius);
+      circle(pos, spaceY*row_num, radius);
     });
     row_num += 1;
   });
   let choice = random_number(0, 1);
   if(choice == 0) zero += 1;
   else one += 1;
-  console.log('zero = ', zero, ' one = ', one);
+  // console.log('zero = ', zero, ' one = ', one);
   create_graph(positions);
 }
 
